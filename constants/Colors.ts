@@ -30,5 +30,6 @@ export const PRIMARY = {
 };
 // 왜 이렇게 넣느냐. 다양하게 색 넣을 예정
 export const GRAY = {
+  LIGHT: "#e5e5e5",
   DEFAULT: "#a3a3a3", // 어느부분에 색깔 넣었는지 주석으로 표시하면 찾기 좋음
 };

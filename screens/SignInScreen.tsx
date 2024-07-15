@@ -10,6 +10,7 @@ import { Alert, Image, Keyboard, StyleSheet, View } from "react-native";
 
 import PropTypes from "prop-types";
 import signIn from "@/app/api/auth";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SignInScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ const SignInScreen = ({ navigation }: any) => {
   const passwordRef = useRef(null);
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const insets = useSafeAreaInsets();
 
   //제일 강력한 구문
   useEffect(() => {
@@ -47,7 +49,7 @@ const SignInScreen = ({ navigation }: any) => {
 
   return (
     <SafeInputView>
-      <View style={styles.container}>
+      <View style={[styles.container, { paddingTop: insets.top }]}>
         <Image
           source={require("../assets/images/main.png")}
           style={styles.image}
