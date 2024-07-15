@@ -18,7 +18,7 @@ type Props = {
   onChangeText: (str: string) => void; //선생님
 };
 
-export const keyboardTypes = {
+export const KeyboardTypes = {
   DEFAULT: "default", //앞에는 선택항목 이름(우리가 마음대로 정해도 됨) : 뒤에가 실제 값
   EMAIL: "email-address", //email @있음
   URL: "url", // url /나옴
@@ -101,7 +101,7 @@ const Input = forwardRef(
 );
 
 Input.defaultProps = {
-  keyboardType: keyboardTypes.DEFAULT,
+  keyboardType: KeyboardTypes.DEFAULT,
   returnKeyType: ReturnKeyTypes.DONE, // 위쪽의 {props}가 이거들을 나타냄
 };
 

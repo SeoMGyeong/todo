@@ -1,14 +1,16 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text } from "react-native";
 import PropTypes from "prop-types";
-import { Colors, PRIMARY, WHITE } from "@/constants/Colors";
+import { Colors, GRAY, PRIMARY, WHITE } from "@/constants/Colors";
+import { isLoading } from "expo-font";
 
 type props = {
   title: string;
   onPress: () => void; // 함수형태
   disabled: boolean;
+  isLoading: boolean;
 };
 
-const Button = ({ title, onPress, disabled }: props) => {
+const Button = ({ title, onPress, disabled, isLoading }: props) => {
   return (
     <Pressable
       onPress={onPress}
@@ -19,15 +21,21 @@ const Button = ({ title, onPress, disabled }: props) => {
       ]}
       disabled={disabled}
     >
-      <Text style={styles.title}>{title}</Text>
+      {isLoading ? (
+        <ActivityIndicator size="small" color={GRAY.DEFAULT} />
+      ) : (
+        <Text style={styles.title}>{title}</Text>
+      )}
     </Pressable>
   );
 };
 
 Button.propTypes = {
+  // 위에 변수값 있을때 밑에 적어주기
   title: PropTypes.string.isRequired, // isRequired 필수항목
   onPress: PropTypes.func.isRequired, // 함수형식
   disabled: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 const styles = StyleSheet.create({
@@ -42,6 +50,7 @@ const styles = StyleSheet.create({
     color: WHITE,
     fontSize: 16,
     fontWeight: "700", // 700은 bold
+    lineHeight: 20, // 위쪽잘려서 보일수도 있기 때문에 주는값
   },
 });
 
