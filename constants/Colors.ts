@@ -33,3 +33,7 @@ export const GRAY = {
   LIGHT: "#e5e5e5",
   DEFAULT: "#a3a3a3", // 어느부분에 색깔 넣었는지 주석으로 표시하면 찾기 좋음
 };
+
+export const DANGER = {
+  DEFAULT: "#ff0000", //빨간색
+};

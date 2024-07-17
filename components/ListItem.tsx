@@ -1,11 +1,32 @@
 import { memo } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { BLACK, DANGER, GRAY, PRIMARY } from "@/constants/Colors";
 
 const ListItem = memo(({ item }: any) => {
+  const checkboxProps = {
+    name: item.isDone ? "checkbox-marked" : "checkbox-blank-outline",
+    size: 24,
+    color: item.isDone ? PRIMARY.DEFAULT : BLACK,
+  };
+
   return (
     <View style={styles.container}>
-      <Text>{item.task}</Text>
+      <Pressable onPress={() => {}} hitSlop={10}>
+        <MaterialCommunityIcons {...checkboxProps} />
+      </Pressable>
+
+      <View style={styles.task}>
+        <Text style={item.isDone && { color: GRAY.DEFAULT }}>{item.task}</Text>
+      </View>
+      <Pressable onPress={() => {}} hitSlop={10}>
+        <MaterialCommunityIcons
+          name="trash-can"
+          size={20}
+          color={DANGER.DEFAULT}
+        />
+      </Pressable>
     </View>
   );
 });
@@ -23,6 +44,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderWidth: 1,
     borderRadius: 8,
+    flexDirection: "row", // 방향 지정, row는 가로정렬
+    alignItems: "center", //세로 가운데 정렬
+  },
+  task: {
+    marginHorizontal: 10, // 아래쪽 flex 없을때는 이걸로 간격 조절 가능
+    flex: 1, // 휴지통 오른쪽 끝에 가서 붙게 됨 / text view 영역으로 묶고 스타일 적용
   },
 });
 
