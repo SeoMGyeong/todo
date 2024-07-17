@@ -1,4 +1,4 @@
-import { BLACK, DANGER, PRIMARY, WHITE } from "@/constants/Colors";
+import { BLACK, PRIMARY, WHITE } from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -9,13 +9,22 @@ import {
   StyleSheet,
   TextInput,
   useWindowDimensions,
-  View,
 } from "react-native";
+import PropTypes from "prop-types";
 
 const BOTTOM = 30;
 const BUTTON_WIDTH = 60;
+const RIGHT = 10;
 
-const InputFAB = () => {
+// 선생님 isBtm isBottom으로 바꾸셨나...
+const InputFAB = ({ onInsert, isBtm }) => {
+  const onPressInsert = () => {
+    const task = text.trim();
+    if (task) {
+      onInsert(task);
+      close();
+    }
+  };
   const [text, setText] = useState("");
   const [isOpend, setIsOpend] = useState(false);
   const inputRef = useRef(); // 참조값 그대로 유지하는 Hook
@@ -23,6 +32,8 @@ const InputFAB = () => {
   const [keyboardHeight, setKeyboardHeight] = useState(BOTTOM); // 기존값 BOTTOM을 기준으로 삼음, 초기값 30이라는 말~
 
   const buttonRotation = useRef(new Animated.Value(0)).current;
+  const inputWidth = useRef(new Animated.Value(BUTTON_WIDTH)).current;
+  const buttonRight = useRef(new Animated.Value(RIGHT)).current;
 
   useEffect(() => {
     if (Platform.OS === "ios") {
@@ -80,10 +91,15 @@ const InputFAB = () => {
   });
 
   const onPressButton = () => {
-    isOpend ? close() : open();
+    isOpend ? onPressInsert() : open();
   };
 
-  const inputWidth = useRef(new Animated.Value(BUTTON_WIDTH)).current;
+  useEffect(() => {
+    Animated.timing(buttonRight, {
+      toValue: isBtm ? RIGHT - BUTTON_WIDTH : RIGHT,
+      useNativeDriver: false,
+    }).start();
+  }, [buttonRight, isBtm]);
 
   return (
     <>
@@ -92,11 +108,17 @@ const InputFAB = () => {
           styles.position,
           styles.button,
           styles.shape,
-          { justifyContent: "center", bottom: keyboardHeight }, // 가운데정렬
+          {
+            justifyContent: "center",
+            bottom: keyboardHeight,
+            right: buttonRight,
+            position: "absolute",
+          }, // justifyContent 가운데정렬
           isOpend && { width: inputWidth }, // 눌렀을때 크기 커졌다 작아졌다
         ]}
       >
         <TextInput
+          onSubmitEditing={onPressInsert}
           ref={inputRef}
           style={styles.input}
           value={text}
@@ -112,7 +134,12 @@ const InputFAB = () => {
         style={[
           styles.position,
           styles.shape,
-          { bottom: keyboardHeight, transform: [{ rotate: spin }] },
+          {
+            right: buttonRight,
+            position: "absolute",
+            bottom: keyboardHeight,
+            transform: [{ rotate: spin }],
+          },
         ]}
       >
         <Pressable
@@ -133,6 +160,11 @@ const InputFAB = () => {
   );
 };
 
+InputFAB.propTypes = {
+  onInsert: PropTypes.func.isRequired,
+  isBtm: PropTypes.bool.isRequired,
+};
+
 const styles = StyleSheet.create({
   button: {
     width: 60,
@@ -145,8 +177,8 @@ const styles = StyleSheet.create({
   position: {
     // button style과 position, bottom, right 동일
     position: "absolute",
-    bottom: BOTTOM,
-    right: 10,
+    bottom: BOTTOM, // 30
+    right: RIGHT, // 10
   },
   shape: {
     height: BUTTON_WIDTH, //button의 height와 높이 같게 하기. 안그러면 살짝 튀어나와있음

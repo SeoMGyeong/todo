@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BLACK, DANGER, GRAY, PRIMARY } from "@/constants/Colors";
 
-const ListItem = memo(({ item }: any) => {
+const ListItem = memo(({ item, onDelete, onToggle }: any) => {
   const checkboxProps = {
     name: item.isDone ? "checkbox-marked" : "checkbox-blank-outline",
     size: 24,
@@ -13,14 +13,24 @@ const ListItem = memo(({ item }: any) => {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => {}} hitSlop={10}>
+      <Pressable onPress={() => onToggle(item.id)} hitSlop={10}>
         <MaterialCommunityIcons {...checkboxProps} />
       </Pressable>
 
       <View style={styles.task}>
-        <Text style={item.isDone && { color: GRAY.DEFAULT }}>{item.task}</Text>
+        <Text
+          style={
+            item.isDone && {
+              color: GRAY.DEFAULT,
+              textDecorationLine: "line-through",
+              textDecorationColor: BLACK,
+            }
+          }
+        >
+          {item.task}
+        </Text>
       </View>
-      <Pressable onPress={() => {}} hitSlop={10}>
+      <Pressable onPress={() => onDelete(item.id)} hitSlop={10}>
         <MaterialCommunityIcons
           name="trash-can"
           size={20}
@@ -35,6 +45,8 @@ ListItem.displayName = "ListItem";
 
 ListItem.propTypes = {
   item: PropTypes.object.isRequired, // 항목들이 3가지가 들어가서 object
+  onDelete: PropTypes.func.isRequired,
+  onToggle: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({

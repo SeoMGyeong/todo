@@ -2,12 +2,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import SignInScreen from "@/screens/SignInScreen";
 import ListScreen from "@/screens/ListScreen";
-import { GRAY, PRIMARY, WHITE } from "@/constants/Colors";
-import { Image, Pressable, Settings, Text } from "react-native";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { PRIMARY, WHITE } from "@/constants/Colors";
+import { Image, Pressable } from "react-native";
 import HeaderLeftButton from "@/components/HeaderLeftButton";
 import HeaderRightButton from "@/components/HeaderRightButton";
 import SettingScreen from "@/screens/SettingScreen";
+import "react-native-get-random-values";
 
 const Stack = createNativeStackNavigator();
 
